@@ -344,7 +344,6 @@ class SmartAttendanceApp(ctk.CTk):
         else:
             self.status_label.configure(text="Error: Tidak ada wajah yang terdeteksi.", text_color="orange")
 
-    # --- [VERSI FINAL & PERBAIKAN BUG] ---
     def simpan_dan_buat_embedding(self):
         wajah_tersimpan = 0
         for data in self.detected_faces_data:
