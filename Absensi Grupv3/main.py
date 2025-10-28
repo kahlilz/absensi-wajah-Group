@@ -253,7 +253,7 @@ class SmartAttendanceApp(ctk.CTk):
             self.status_label.configure(text="Input interval/repetisi tidak valid (harus angka > 0).", text_color="orange")
             return
 
-        self.timer_interval_ms = interval_menit * 1 * 1000
+        self.timer_interval_ms = interval_menit * 60 * 1000
         self.current_repetition = 0
 
         self.start_timer_button.configure(state="disabled", text="Timer Kamera Berjalan...")
