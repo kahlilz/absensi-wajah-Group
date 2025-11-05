@@ -51,7 +51,7 @@ class SmartAttendanceApp(ctk.CTk):
 
         # --- KONFIGURASI JENDELA & TEMA ---
         self.title("Smart Attendance [YOLO + SFace]")
-        self.geometry("450x700")
+        self.geometry("750x700")
         self.resizable(True, True)
         ctk.set_appearance_mode("Dark")
         ctk.set_default_color_theme("blue")
@@ -138,7 +138,7 @@ class SmartAttendanceApp(ctk.CTk):
         # --- [MODIFIKASI] Pemilihan Kamera untuk Timer ---
         self.camera_combobox = ctk.CTkComboBox(self.timer_frame, height=35, command=self.set_camera_index)
         self.camera_combobox.pack(pady=(10, 5), fill="x", padx=10)
-        self.detect_cameras() # Panggil detect cameras di init
+        self.deteksi_kamera() # Panggil detect cameras di init
 
         self.start_timer_button = ctk.CTkButton(self.timer_frame, text="Mulai Absen Terjadwal Kamera", height=35,
                                                  command=self.mulai_absensi_terjadwal_kamera)
@@ -162,7 +162,7 @@ class SmartAttendanceApp(ctk.CTk):
         if use_camera:
             self.tambah_data_button.configure(text="Ambil Foto Pendaftaran via Kamera", command=self.ambil_dari_kamera)
             self.timer_frame.pack(fill="x", pady=5) # Tampilkan frame timer
-            self.detect_cameras() # Pastikan daftar kamera ada
+            self.deteksi_kamera() # Pastikan daftar kamera ada
             if self.camera_index == -1: # Nonaktifkan jika tidak ada kamera
                  self.start_timer_button.configure(state="disabled")
             else:
@@ -172,19 +172,15 @@ class SmartAttendanceApp(ctk.CTk):
             self.timer_frame.pack_forget() # Sembunyikan frame timer
 
     # --- FUNGSI DISPATCHER (PENGATUR) ---
-    def handle_tambah_data(self):
+    def handle_tambah_data(self): 
         # Fungsi ini sekarang dikontrol oleh command button yang diubah oleh _toggle_input_mode
         # Cukup panggil command yang sudah terpasang
         current_command = self.tambah_data_button.cget("command")
         if current_command:
              current_command()
 
-    # Fungsi ini tidak lagi diperlukan karena tombol absen timer terpisah
-    # def handle_mulai_absensi(self):
-    #     pass
-
     # --- Fungsi Kamera & UI ---
-    def detect_cameras(self):
+    def deteksi_kamera(self):
         available_cameras = []
         try:
             # Coba deteksi hingga 5 kamera
@@ -253,7 +249,7 @@ class SmartAttendanceApp(ctk.CTk):
             self.status_label.configure(text="Input interval/repetisi tidak valid (harus angka > 0).", text_color="orange")
             return
 
-        self.timer_interval_ms = interval_menit * 60 * 1000
+        self.timer_interval_ms = interval_menit * 1 * 1000
         self.current_repetition = 0
 
         self.start_timer_button.configure(state="disabled", text="Timer Kamera Berjalan...")
@@ -355,10 +351,8 @@ class SmartAttendanceApp(ctk.CTk):
         cap.release()
         cv2.destroyAllWindows()
         # Refresh daftar kamera setelah window ditutup, jaga-jaga jika ada perubahan
-        self.detect_cameras()
+        self.deteksi_kamera()
 
-
-    # --- (Fungsi _proses_gambar_untuk_review, absensiDariGambar, _handle_konfirmasi_absen_gambar, _recognize_one_face, dll. tetap sama) ---
     # Pastikan _proses_gambar_untuk_review TIDAK memanggil _jalankan_timer atau _selesai_timer
     def _proses_gambar_untuk_review(self, frame):
         """Memproses satu frame gambar dan menampilkan menu review."""
@@ -482,7 +476,6 @@ class SmartAttendanceApp(ctk.CTk):
         close_button = ctk.CTkButton(konfirmasi_window, text="Tutup Review", command=konfirmasi_window.destroy)
         close_button.pack(pady=10)
 
-
     def absensiDariGambar(self):
         filepath = filedialog.askopenfilename(
             title="Pilih Gambar untuk Absensi Manual",
@@ -559,7 +552,6 @@ class SmartAttendanceApp(ctk.CTk):
 
         button_konfirmasi.configure(text="Tercatat & Terupdate", state="disabled", fg_color="grey")
 
-
     def _recognize_one_face(self, face_crop):
         if face_crop is None or face_crop.size == 0:
             return "Crop Gagal", float('inf')
@@ -615,7 +607,6 @@ class SmartAttendanceApp(ctk.CTk):
         except Exception as e:
             print(f"DEBUG: Error saat mengenali wajah -> {e}")
             return "Error Proses", float('inf')
-
 
     # --- FUNGSI MANAJEMEN DATABASE ---
     def tampilkan_database(self):
@@ -826,7 +817,6 @@ class SmartAttendanceApp(ctk.CTk):
         
         self.batal_simpan_semua_wajah()
 
-
     # --- FUNGSI HELPER & DATABASE ---
     def load_embedding_db(self):
         # ... (Kode load DB sama seperti sebelumnya) ...
@@ -857,7 +847,6 @@ class SmartAttendanceApp(ctk.CTk):
         print("File embeddings.pkl tidak ditemukan. Membuat database baru.")
         return {}
 
-
     def save_embedding_db(self):
          # ... (Kode save DB sama seperti sebelumnya) ...
          try:
@@ -867,7 +856,6 @@ class SmartAttendanceApp(ctk.CTk):
          except Exception as e:
               print(f"ERROR saat menyimpan DB: {e}")
               self.status_label.configure(text=f"Gagal menyimpan database: {e}", text_color="red")
-
 
     def batal_simpan_semua_wajah(self):
         # ... (Kode batal simpan sama seperti sebelumnya) ...
@@ -926,4 +914,3 @@ class SmartAttendanceApp(ctk.CTk):
 if __name__ == "__main__":
     app = SmartAttendanceApp()
     app.mainloop()
-
