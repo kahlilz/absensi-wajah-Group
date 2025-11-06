@@ -10,12 +10,14 @@ class FaceRecognizer:
         """Mengekstrak embedding dari crop wajah"""
         try:
             embedding_obj = DeepFace.represent(
-                face_image, 
+                img_path=face_image,
                 model_name='SFace', 
                 enforce_detection=False, 
                 detector_backend='skip'
             )
-            return embedding_obj[0]['embedding']
+            if embedding_obj and len(embedding_obj) > 0:
+                return embedding_obj[0]['embedding']
+            return None
         except Exception as e:
             print(f"Error extracting embedding: {e}")
             return None
@@ -23,13 +25,11 @@ class FaceRecognizer:
     def compare_embeddings(self, embedding1, embedding2):
         """Membandingkan dua embedding"""
         try:
+            if embedding1 is None or embedding2 is None:
+                return False, float('inf')
+                
             distance = cosine(embedding1, embedding2)
             return distance < self.threshold, distance
         except Exception as e:
             print(f"Error comparing embeddings: {e}")
             return False, float('inf')
-    
-    def recognize_face(self, face_crop, embedding_db):
-        """Mengenali wajah terhadap database"""
-        # Implementation dari _recognize_one_face
-        pass
