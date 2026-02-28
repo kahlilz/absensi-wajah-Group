@@ -1,2 +1,22 @@
-"Test Eksport/dist/" 
-"Test Eksport/build/" 
+# Abaikan semua file database
+*.pkl
+
+# Abaikan semua file gambar (foto log)
+*.jpg
+*.jpeg
+*.png
+
+# Abaikan file sementara Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Abaikan environment virtual (jika ada)
+venv/
+env/
+.env
+
+# Abaikan file konfigurasi lokal (misal berisi kunci API atau password)
+*.local.ini
+*.local.conf
