@@ -1,3 +1,5 @@
 /Absensi Grupv3 - ICTROPS/
-/scikit-learn
-/.pytest_cache
+/scikit-learn/
+/.pytest_cache/git add .gitignore
+git commit -m "Hentikan pelacakan folder Absensi Grupv3 - ICTROPS"
+git push origin main

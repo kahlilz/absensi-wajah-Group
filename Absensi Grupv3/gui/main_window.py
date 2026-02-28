@@ -610,10 +610,19 @@ class SmartAttendanceApp(ctk.CTk):
     # --- DATABASE MANAGEMENT ---
     def tampilkan_database(self):
         """Show database management window"""
-        if self.db_window is not None and self.db_window.winfo_exists():
-            self.db_window.focus()
-            return
-
+        # --- PERBAIKAN: Cek dengan try/except, bukan .winfo_exists() langsung ---
+        if self.db_window is not None:
+            try:
+                # Cek apakah window masih ada dengan mengakses atribut 'window'
+                if hasattr(self.db_window, 'window') and self.db_window.window.winfo_exists():
+                    self.db_window.focus()
+                    return
+            except:
+                # Jika error, set ke None dan buat baru
+                self.db_window = None
+        
+        # Buat window database baru
+        from gui.database_window import DatabaseWindow
         self.db_window = DatabaseWindow(self, self.db_manager)
 
     # --- UTILITY FUNCTIONS ---

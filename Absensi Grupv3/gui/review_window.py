@@ -38,7 +38,7 @@ class ReviewWindow:
 
     def process_frame(self):
         """Process frame and display results"""
-        THRESHOLD_YAKIN = 0.45
+        THRESHOLD_YAKIN = 0.2
         absen_otomatis_count = 0
 
         # Detect faces
